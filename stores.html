@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stores — Emberleaf</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="pages.css">
+</head>
+<body class="content-page">
+    <header class="page-header">
+        <a class="page-brand" href="index.html">Emberleaf</a>
+        <nav class="page-nav" id="pageNav">
+            <a href="blends.html">BLENDS</a>
+            <a href="harvests.html">HARVESTS</a>
+            <a href="shopping.html">SHOPPING</a>
+            <a class="active" href="stores.html">STORES</a>
+        </nav>
+        <div class="page-header-actions">
+            <a class="page-bag" href="shopping.html"><i class="fa-solid fa-bag-shopping"></i> SHOP</a>
+            <button class="page-menu-toggle" id="pageMenuToggle" aria-label="Toggle navigation"><span></span><span></span></button>
+        </div>
+    </header>
+
+    <main>
+        <section class="inner-hero stores-hero">
+            <div class="inner-hero-image"></div>
+            <div class="inner-hero-overlay"></div>
+            <div class="inner-hero-content">
+                <span class="inner-eyebrow">A LITTLE CLOSER TO YOUR CUP</span>
+                <h1>Find your<br><em>Emberleaf moment.</em></h1>
+                <p>Explore ways to discover our collection, connect with us and find your favourite blends.</p>
+                <a href="#findUs" class="inner-button">FIND OUT MORE <i class="fa-solid fa-arrow-down"></i></a>
+            </div>
+            <span class="inner-hero-caption">A PLACE FOR EVERY TEA LOVER</span>
+        </section>
+
+        <section class="inner-intro" id="findUs">
+            <div class="page-container">
+                <span class="inner-eyebrow">WHEREVER YOU ARE</span>
+                <h2>A little warmth<br><em>is never far away.</em></h2>
+                <p>Whether you prefer discovering something new online or connecting with a local stockist, we'd love to help you find your next favourite blend.</p>
+            </div>
+        </section>
+
+        <section class="store-options page-section">
+            <div class="page-container">
+                <div class="page-section-heading">
+                    <div>
+                        <span class="inner-eyebrow">HOW TO FIND US</span>
+                        <h2>Choose your <em>way in.</em></h2>
+                    </div>
+                </div>
+                <div class="store-option-grid">
+                    <article class="store-option">
+                        <div class="store-option-icon"><i class="fa-solid fa-globe"></i></div>
+                        <span>01 / OPEN EVERY DAY</span>
+                        <h3>Shop online.</h3>
+                        <p>Explore our collection from wherever you are. Find a blend, browse our products and build your little tea collection.</p>
+                        <a href="shopping.html" class="text-link">VISIT THE ONLINE SHOP <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
+                    <article class="store-option">
+                        <div class="store-option-icon"><i class="fa-solid fa-shop"></i></div>
+                        <span>02 / OUR RETAIL PARTNERS</span>
+                        <h3>Find a stockist.</h3>
+                        <p>Looking for Emberleaf in person? Ask us about local retail availability and participating stockists.</p>
+                        <a href="#storeFinder" class="text-link">EXPLORE STOCKIST ENQUIRIES <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
+                    <article class="store-option">
+                        <div class="store-option-icon"><i class="fa-solid fa-mug-hot"></i></div>
+                        <span>03 / LITTLE GATHERINGS</span>
+                        <h3>Meet us at an event.</h3>
+                        <p>We love the idea of tasting, sharing and discovering blends together. Get in touch about future events.</p>
+                        <a href="mailto:hello@emberleaf.example" class="text-link">ASK ABOUT EVENTS <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="store-finder-section" id="storeFinder">
+            <div class="page-container store-finder-layout">
+                <div class="store-finder-copy">
+                    <span class="inner-eyebrow">LET'S FIND YOUR LOCAL SPOT</span>
+                    <h2>Looking for<br><em>somewhere nearby?</em></h2>
+                    <p>Tell us your city and we'll help you enquire about local stockist availability.</p>
+                    <form class="store-finder-form" id="storeFinderForm">
+                        <label for="storeCity">YOUR CITY OR POSTCODE</label>
+                        <div><i class="fa-solid fa-location-dot"></i><input id="storeCity" type="text" placeholder="Enter your city or postcode" required><button type="submit">SEARCH</button></div>
+                        <small id="storeFinderStatus"></small>
+                    </form>
+                </div>
+                <div class="store-finder-visual">
+                    <div class="store-orbit orbit-one"></div>
+                    <div class="store-orbit orbit-two"></div>
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>FIND YOUR EMBERLEAF</span>
+                    <small>One lovely cup at a time.</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="store-contact-section page-section">
+            <div class="page-container store-contact-card">
+                <div>
+                    <span class="inner-eyebrow">WE'D LOVE TO HEAR FROM YOU</span>
+                    <h2>Have a place<br><em>in mind?</em></h2>
+                    <p>Know a beautiful shop, a lovely café or a local space that might be a perfect fit for Emberleaf? Tell us about it.</p>
+                </div>
+                <a href="mailto:hello@emberleaf.example?subject=Emberleaf%20Stockist%20Enquiry" class="inner-button">GET IN TOUCH <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <div class="page-container footer-inner">
+            <a class="page-brand" href="index.html">Emberleaf</a>
+            <p>Thoughtful blends for the beauty of everyday rituals.</p>
+            <div class="footer-page-links"><a href="index.html">HOME</a><a href="blends.html">BLENDS</a><a href="harvests.html">HARVESTS</a><a href="shopping.html">SHOPPING</a></div>
+            <span>© 2026 EMBERLEAF</span>
+        </div>
+    </footer>
+
+    <script src="pages.js"></script>
+</body>
+</html>

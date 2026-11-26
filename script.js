@@ -1,9 +1,6 @@
-/* Emberleaf — Taste Autumn
-   Scroll-scrubbed 8-state "Smart Animate" story. Needs Lenis 1.1.13 (loaded before this file). */
 (() => {
   'use strict';
 
-  /* ================= 1. ASSETS ================= */
   const CF = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/';
   const SRC = {
     dunes:   [CF + 'hf_20261124_025933_fa37857a-0e54-406c-ae1a-9983cf44beaa.png', 2048],
@@ -16,6 +13,7 @@
     'https://images.higgs.ai/?default=1&output=webp&url=' + encodeURIComponent(url) + '&w=' + w + '&q=85';
 
   const SHEET = { ingr: [2048, 1152], tins: [2048, 2048] };
+
   const SPR = {
     i_tea:    ['ingr', 57, 144, 437, 343],
     i_card:   ['ingr', 563, 158, 420, 290],
@@ -60,7 +58,6 @@
     s.backgroundPosition = (x / (W - w) * 100) + '% ' + (y / (H - h) * 100) + '%';
   }
 
-  /* ================= 2. HELPERS ================= */
   const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
   const lerp = (a, b, t) => a + (b - a) * t;
 
@@ -93,7 +90,6 @@
   }
   const easeOut = bezier(0, 0, 0.58, 1);
 
-  /* ================= 3. IMAGE LOADING + RUNTIME KEYS ================= */
   function tryLoad(src, cors) {
     return new Promise((resolve) => {
       const im = new Image();
@@ -181,7 +177,6 @@
     cv.width = c.width; cv.height = c.height;
     cv.getContext('2d').drawImage(c, 0, 0);
   });
-
   const pFlowers = loadAsset('flowers').then((a) => {
     if (!a) return;
     const c = whiteKey(a.im), s = a.im.naturalWidth / 2048;
@@ -192,14 +187,12 @@
     });
     flAsp = { l: EL.fl_l.height / EL.fl_l.width, r: EL.fl_r.height / EL.fl_r.width };
   });
-
   const pFunnel = loadAsset('funnel').then((a) => { if (a) drawFunnel(a.im, $('funnelCv')); });
   const pSheets = Promise.all(['ingr', 'tins'].map((sheet) => loadAsset(sheet).then((a) => {
     if (!a) return;
     for (const id in SPR) if (SPR[id][0] === sheet) EL[id].style.backgroundImage = 'url("' + a.url + '")';
   })));
 
-  /* ================= 4. FRAME + 8 STATES ================= */
   let F = null, S = [], stepPx = 0, lastW = -1;
 
   function layoutNav(vw, vh, desk, u) {
@@ -279,7 +272,6 @@
     const GW = desk
       ? { rose: 230, tea: 240, peel: 228, cassia: 240, amber: 180, card: 236 }
       : { rose: 138, tea: 146, peel: 136, cassia: 146, amber: 110, card: 142 };
-
     const GRID = {};
     IDS.forEach((id, i) => {
       if (desk) {
@@ -299,7 +291,6 @@
     const IN = desk
       ? { rose: [636, 178, 160, -8], tea: [806, 170, 168, 4], cassia: [660, 262, 152, -16], card: [790, 270, 148, 10], peel: [716, 350, 132, 6], amber: [724, 424, 96, 0] }
       : { rose: [150, 200, 88, -8], tea: [240, 196, 94, 4], cassia: [160, 258, 84, -16], card: [232, 262, 80, 10], peel: [185, 316, 74, 6], amber: [204, 368, 56, 0] };
-
     const shift4 = desk ? -560 : -330;
     const shift5 = desk ? -810 : -610;
 
@@ -346,7 +337,6 @@
     const PW = desk ? [340, 420, 340] : [148, 184, 148];
     const TW = desk ? [290, 320, 290] : [120, 140, 120];
     const FIN = {};
-
     ['l', 'm', 'r'].forEach((s, i) => {
       const x = sx(RX[i]), pt = RT[i];
       const pid = 'p_' + s, tid = 'tin_' + s, lid = 'lid_' + s;
@@ -356,21 +346,17 @@
       FIN[tid] = { x, y: tTop + th / 2, w: TW[i], r: 0, o: 1 };
       FIN[lid] = { x, y: tTop + 0.05 * th - lH / 2, w: lW, r: 0, o: 1 };
     });
-
     const maxTW = Math.max(...TW);
     const goneOff = BELOW - Math.min(...RT) + maxTW * (ASP.tin_m + 0.45 * ASP.lid_m) + 60;
     const lowOff = (desk ? 420 : 300) + Math.max(0, BELOW - H);
     const off = (p, d) => Object.assign({}, p, { y: p.y + d });
-
     ['p_l', 'p_r', 'tin_l', 'tin_r', 'lid_l', 'lid_r', 'p_m'].forEach((id) => {
       all(id, (k) => (k <= 5 ? off(FIN[id], goneOff) : k === 6 ? off(FIN[id], lowOff) : FIN[id]));
     });
-
     all('tin_m', (k) =>
       k <= 4 ? { x: W / 2, y: BELOW + 40 + bigH / 2, w: bigW, r: 0, o: 1 }
         : k <= 6 ? { x: W / 2, y: bigTop + bigH / 2, w: bigW, r: 0, o: 1 }
           : FIN.tin_m);
-
     all('lid_m', (k) =>
       k <= 5 ? { x: W / 2, y: ABOVE - 0.9 * lh, w: lw, r: 0, o: 1 }
         : k === 6 ? { x: W / 2, y: bigTop + 0.05 * bigH - lh / 2, w: lw, r: 0, o: 1 }
@@ -382,7 +368,6 @@
     all('mark', (k) => (k === 7 ? { x: W / 2, y: y7, o: 1 } : { x: W / 2, y: y7 - 18, o: 0 }));
   }
 
-  /* ================= 5. RENDER ================= */
   const SPRITE_SET = new Set(SPRITES);
 
   function mix(A, B, t) {
@@ -421,7 +406,6 @@
     }
   }
 
-  /* ================= 6. SCROLL, SETTLE, KEYS ================= */
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   layout();
   scrollTo(0, 0);
@@ -461,10 +445,8 @@
     if (settling && lenis) { lenis.stop(); lenis.start(); }
     settling = false;
   }, { passive: true });
-
   addEventListener('touchend', () => { fingerDown = false; lastMove = performance.now(); }, { passive: true });
   addEventListener('touchcancel', () => { fingerDown = false; }, { passive: true });
-
   addEventListener('pointerdown', (e) => {
     if (e.pointerType === 'mouse') { pending = true; lastInput = 'bar'; }
   }, { passive: true });
@@ -510,11 +492,9 @@
     }
     requestAnimationFrame(frame);
   }
-
   render(0);
   requestAnimationFrame(frame);
 
-  /* ================= 7. LOAD REVEAL ================= */
   const fontsReady = document.fonts
     ? document.fonts.load('400 1em Marcellus').then(() => document.fonts.ready)
     : Promise.resolve();

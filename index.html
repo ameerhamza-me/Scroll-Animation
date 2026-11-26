@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Emberleaf — Taste Autumn</title>
+  <link rel="preconnect" href="https://images.higgs.ai" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav id="nav" aria-label="Main">
+    <a class="brand" href="/">Emberleaf</a>
+    <ul>
+      <li><a href="/">BLENDS</a></li>
+      <li><a href="/">HARVESTS</a></li>
+      <li><a href="/">SHOPPING</a></li>
+      <li><a href="/">STORES</a></li>
+    </ul>
+  </nav>
+
+  <div id="track" aria-hidden="true"></div>
+
+  <main id="stage" aria-label="Emberleaf — Taste Autumn">
+    <div id="bgSky"></div>
+    <div id="bgField"></div>
+    <div id="bgProd"></div>
+
+    <h1 id="headline"><div class="hl-in"><span>TASTE</span><span>AUTUMN</span></div></h1>
+    <div id="blends" aria-hidden="true">BLENDS</div>
+    <div id="mark" aria-hidden="true">Emberleaf</div>
+
+    <canvas id="dunes" aria-hidden="true"></canvas>
+
+    <div id="i_rose" class="spr" role="img" aria-label="Dried rosebuds"></div>
+    <div id="i_tea" class="spr" role="img" aria-label="Loose black tea"></div>
+    <div id="i_peel" class="spr" role="img" aria-label="Orange peel"></div>
+    <div id="i_cassia" class="spr" role="img" aria-label="Cassia sticks"></div>
+    <div id="i_amber" class="spr" role="img" aria-label="Amber resin"></div>
+    <div id="i_card" class="spr" role="img" aria-label="Cardamom pods"></div>
+
+    <div id="t_rose" class="lbl">ROSE</div>
+    <div id="t_tea" class="lbl">BLACK TEA</div>
+    <div id="t_peel" class="lbl">PEEL</div>
+    <div id="t_cassia" class="lbl">CASSIA</div>
+    <div id="t_amber" class="lbl">RESINS</div>
+    <div id="t_card" class="lbl">CARDAMOM</div>
+
+    <div id="drop" class="spr" aria-hidden="true"></div>
+    <div id="funnel" aria-hidden="true"><canvas id="funnelCv"></canvas></div>
+
+    <div id="p_l" class="spr" aria-hidden="true"></div>
+    <div id="p_r" class="spr" aria-hidden="true"></div>
+    <div id="tin_l" class="spr" role="img" aria-label="Cream tea tin"></div>
+    <div id="tin_r" class="spr" role="img" aria-label="Apricot tea tin"></div>
+    <div id="lid_l" class="spr" aria-hidden="true"></div>
+    <div id="lid_r" class="spr" aria-hidden="true"></div>
+    <div id="p_m" class="spr" aria-hidden="true"></div>
+    <div id="tin_m" class="spr" role="img" aria-label="Terracotta tea tin"></div>
+    <div id="lid_m" class="spr" aria-hidden="true"></div>
+
+    <canvas id="fl_l" aria-hidden="true"></canvas>
+    <canvas id="fl_r" aria-hidden="true"></canvas>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

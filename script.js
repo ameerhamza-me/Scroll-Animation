@@ -16,7 +16,6 @@
     'https://images.higgs.ai/?default=1&output=webp&url=' + encodeURIComponent(url) + '&w=' + w + '&q=85';
 
   const SHEET = { ingr: [2048, 1152], tins: [2048, 2048] };
-  // id: [sheet, x, y, w, h]
   const SPR = {
     i_tea:    ['ingr', 57, 144, 437, 343],
     i_card:   ['ingr', 563, 158, 420, 290],
@@ -35,8 +34,8 @@
     p_l:      ['tins', 1449, 1355, 502, 480],
     p_r:      ['tins', 1449, 1355, 502, 480]
   };
-  const FUN_BOX = [622, 184, 1636, 2578];                               // 2880-px units
-  const FL_BOX = { l: [0, 314, 579, 838], r: [1431, 363, 617, 789] };   // 2048-px units
+  const FUN_BOX = [622, 184, 1636, 2578];
+  const FL_BOX = { l: [0, 314, 579, 838], r: [1431, 363, 617, 789] };
   const HILL_FRAC = 413 / 1152;
 
   const ASP = {};
@@ -55,7 +54,6 @@
   const nav = $('nav'), track = $('track');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // sprite size/position (image URL is set once the sheet has loaded)
   for (const id in SPR) {
     const [sh, x, y, w, h] = SPR[id], [W, H] = SHEET[sh], s = EL[id].style;
     s.backgroundSize = (W / w * 100) + '% ' + (H / h * 100) + '%';
@@ -93,7 +91,7 @@
       return Y(t);
     };
   }
-  const easeOut = bezier(0, 0, 0.58, 1); // Figma "Ease out"
+  const easeOut = bezier(0, 0, 0.58, 1);
 
   /* ================= 3. IMAGE LOADING + RUNTIME KEYS ================= */
   function tryLoad(src, cors) {
@@ -106,7 +104,7 @@
       im.src = src;
     });
   }
-  // proxy (CORS) → direct URL (CORS) → direct URL (no CORS: shows, but cannot be keyed)
+
   async function loadAsset(key) {
     const [url, w] = SRC[key];
     const tries = [[proxy(url, w), true], [url, true], [url, false]];
@@ -126,7 +124,6 @@
     return [c, g];
   }
 
-  // white key: alpha from distance to white, then un-mix the white
   function whiteKey(im) {
     const [c, g] = readable(im);
     try {
@@ -144,11 +141,10 @@
         p[i + 3] = Math.round(a * p[i + 3]);
       }
       g.putImageData(d, 0, 0);
-    } catch (e) { /* no CORS: keep unkeyed */ }
+    } catch (e) {}
     return c;
   }
 
-  // funnel key: remove the flat apricot backdrop
   function drawFunnel(im, cv) {
     const k = im.naturalWidth / 2880;
     const [bx, by, bw, bh] = FUN_BOX.map((v) => Math.round(v * k));
@@ -185,6 +181,7 @@
     cv.width = c.width; cv.height = c.height;
     cv.getContext('2d').drawImage(c, 0, 0);
   });
+
   const pFlowers = loadAsset('flowers').then((a) => {
     if (!a) return;
     const c = whiteKey(a.im), s = a.im.naturalWidth / 2048;
@@ -195,6 +192,7 @@
     });
     flAsp = { l: EL.fl_l.height / EL.fl_l.width, r: EL.fl_r.height / EL.fl_r.width };
   });
+
   const pFunnel = loadAsset('funnel').then((a) => { if (a) drawFunnel(a.im, $('funnelCv')); });
   const pSheets = Promise.all(['ingr', 'tins'].map((sheet) => loadAsset(sheet).then((a) => {
     if (!a) return;
@@ -229,25 +227,22 @@
     const sx = (x) => W / 2 + (x - W / 2) * spread;
     const BELOW = (vh - oy) / u, ABOVE = -oy / u;
 
-    if (vw !== lastW) { lastW = vw; stepPx = Math.max(320, vh); } // ignore mobile address-bar resizes
+    if (vw !== lastW) { lastW = vw; stepPx = Math.max(320, vh); }
     track.style.height = (7 * stepPx + vh) + 'px';
 
     layoutNav(vw, vh, desk, u);
 
-    // type
     EL.headline.style.fontSize = (desk ? 148 : 72) * u + 'px';
     EL.blends.style.fontSize = (desk ? 252 : 84) * u + 'px';
     EL.mark.style.fontSize = (desk ? 80 : 54) * u + 'px';
     const lfs = desk ? Math.max(11, 22 * u) : Math.max(11, 14 * u);
     IDS.forEach((id) => { EL['t_' + id].style.fontSize = lfs + 'px'; });
 
-    // sprite base boxes (400 frame units wide)
     SPRITES.forEach((id) => {
       EL[id].style.width = 400 * u + 'px';
       EL[id].style.height = 400 * u * ASP[id] + 'px';
     });
 
-    // dunes
     const hillPx = oy + (desk ? 380 : 338) * u;
     let dH = Math.max(vw * 0.5625, W * u * 0.5625, (vh - hillPx) / (1 - HILL_FRAC) + 2);
     if (!desk) dH = Math.max(dH, (vh - hillPx) / (1 - HILL_FRAC) * 1.04);
@@ -258,7 +253,6 @@
     const dunesTop = hillPx - HILL_FRAC * dH;
     const down = BELOW - (dunesTop - oy) / u + 40;
 
-    // marigold corners
     const fw = (desk ? 300 : 130) * u;
     const fl = { l: { w: fw, h: fw * flAsp.l }, r: { w: fw, h: fw * flAsp.r } };
     fl.l.x = -0.06 * fw;      fl.l.y = vh - 0.86 * fl.l.h;
@@ -268,7 +262,6 @@
 
     F = { vw, vh, desk, W, H, u, ox, oy, BELOW, ABOVE, dunesTop, fl };
 
-    /* ---- states ---- */
     S = [...Array(8)].map(() => ({}));
     const all = (id, fn) => { for (let k = 0; k < 8; k++) S[k][id] = fn(k); };
 
@@ -279,14 +272,14 @@
     const hx = desk ? 92 : 22, hy = desk ? 224 : 272;
     all('headline', (k) => ({ x: hx, y: k ? hy + down : hy }));
 
-    // state 0: hero  [x, y, w, r]
     const HERO = desk
       ? { tea: [300, 560, 100, -8], card: [1035, 520, 92, 6], rose: [585, 628, 96, -4], peel: [1215, 612, 104, 10], cassia: [860, 575, 104, -6], amber: [430, 720, 78, 0] }
       : { tea: [70, 450, 62, -8], card: [300, 430, 58, 6], rose: [180, 520, 62, -4], peel: [330, 560, 64, 10], cassia: [120, 610, 66, -6], amber: [250, 640, 50, 0] };
-    // state 1: grid widths
+
     const GW = desk
       ? { rose: 230, tea: 240, peel: 228, cassia: 240, amber: 180, card: 236 }
       : { rose: 138, tea: 146, peel: 136, cassia: 146, amber: 110, card: 142 };
+
     const GRID = {};
     IDS.forEach((id, i) => {
       if (desk) {
@@ -297,15 +290,16 @@
         GRID[id] = { x: sx([105, 285][c]), y: [232, 440, 648][r], ly: [140, 348, 556][r] };
       }
     });
-    // state 2: gather  [dx, dy, w, r]
+
     const GC = desk ? [720, 175] : [195, 190];
     const GO = desk
       ? { rose: [-120, -20, 150, -10], tea: [10, -55, 165, 0], peel: [125, -5, 140, 12], cassia: [-55, 55, 150, -14], amber: [75, 58, 108, 8], card: [0, 25, 140, 4] }
       : { rose: [-70, -12, 92, -10], tea: [6, -34, 100, 0], peel: [74, -3, 86, 12], cassia: [-34, 34, 92, -14], amber: [46, 36, 66, 8], card: [0, 15, 86, 4] };
-    // state 3: inside the funnel  [x, y, w, r]
+
     const IN = desk
       ? { rose: [636, 178, 160, -8], tea: [806, 170, 168, 4], cassia: [660, 262, 152, -16], card: [790, 270, 148, 10], peel: [716, 350, 132, 6], amber: [724, 424, 96, 0] }
       : { rose: [150, 200, 88, -8], tea: [240, 196, 94, 4], cassia: [160, 258, 84, -16], card: [232, 262, 80, 10], peel: [185, 316, 74, 6], amber: [204, 368, 56, 0] };
+
     const shift4 = desk ? -560 : -330;
     const shift5 = desk ? -810 : -610;
 
@@ -325,25 +319,21 @@
             : { x: g.x, y: g.ly - 14, o: 0 });
     });
 
-    // funnel (top edges → centre)
     const funW = desk ? 483 : 330, funH = funW * ASP.funnel;
     const top2 = desk ? 660 : 640, top3 = desk ? 89 : 150;
     const gone5 = top3 + shift5 - 0.4 * funH;
     const ftops = [BELOW + 60, BELOW + 60, top2, top3, top3 + shift4, gone5, gone5, gone5];
     all('funnel', (k) => ({ x: W / 2, y: ftops[k] + funH / 2, w: funW, r: 0, o: 1 }));
 
-    // BLENDS
     const fsB = desk ? 252 : 84;
     const yW = Math.max(desk ? 1080 : 960, BELOW + fsB * 0.7);
     const y3 = desk ? 600 : 548;
     const by = [yW, yW, yW, y3, y3 + shift4, y3 + shift5 - 300, y3 + shift5 - 300, y3 + shift5 - 300];
     all('blends', (k) => ({ x: W / 2, y: by[k], o: k <= 4 ? 1 : 0 }));
 
-    // big middle tin + lid
     const bigW = desk ? 600 : 330, bigTop = desk ? 480 : 470, bigH = bigW * ASP.tin_m;
     const lw = bigW * 0.45, lh = lw * ASP.lid_m;
 
-    // drop
     const dropW = desk ? 34 : 22, dropH = dropW * ASP.drop;
     const spout4 = top3 + funH + shift4;
     all('drop', (k) =>
@@ -351,12 +341,12 @@
         : k === 4 ? { x: W / 2, y: spout4 + 0.5 * dropH, w: dropW, r: 0, o: 1 }
           : { x: W / 2, y: bigTop + 0.2 * dropH, w: dropW * 0.8, r: 0, o: 0 });
 
-    // product line-up (state 7)
     const RX = desk ? [375, 720, 1065] : [76, 195, 314];
     const RT = desk ? [600, 765, 600] : [620, 712, 620];
     const PW = desk ? [340, 420, 340] : [148, 184, 148];
     const TW = desk ? [290, 320, 290] : [120, 140, 120];
     const FIN = {};
+
     ['l', 'm', 'r'].forEach((s, i) => {
       const x = sx(RX[i]), pt = RT[i];
       const pid = 'p_' + s, tid = 'tin_' + s, lid = 'lid_' + s;
@@ -366,23 +356,26 @@
       FIN[tid] = { x, y: tTop + th / 2, w: TW[i], r: 0, o: 1 };
       FIN[lid] = { x, y: tTop + 0.05 * th - lH / 2, w: lW, r: 0, o: 1 };
     });
+
     const maxTW = Math.max(...TW);
     const goneOff = BELOW - Math.min(...RT) + maxTW * (ASP.tin_m + 0.45 * ASP.lid_m) + 60;
     const lowOff = (desk ? 420 : 300) + Math.max(0, BELOW - H);
     const off = (p, d) => Object.assign({}, p, { y: p.y + d });
+
     ['p_l', 'p_r', 'tin_l', 'tin_r', 'lid_l', 'lid_r', 'p_m'].forEach((id) => {
       all(id, (k) => (k <= 5 ? off(FIN[id], goneOff) : k === 6 ? off(FIN[id], lowOff) : FIN[id]));
     });
+
     all('tin_m', (k) =>
       k <= 4 ? { x: W / 2, y: BELOW + 40 + bigH / 2, w: bigW, r: 0, o: 1 }
         : k <= 6 ? { x: W / 2, y: bigTop + bigH / 2, w: bigW, r: 0, o: 1 }
           : FIN.tin_m);
+
     all('lid_m', (k) =>
       k <= 5 ? { x: W / 2, y: ABOVE - 0.9 * lh, w: lw, r: 0, o: 1 }
         : k === 6 ? { x: W / 2, y: bigTop + 0.05 * bigH - lh / 2, w: lw, r: 0, o: 1 }
           : FIN.lid_m);
 
-    // wordmark (never touches the nav)
     const fsM = desk ? 80 : 54;
     const navBottom = nav.offsetTop + nav.offsetHeight;
     const y7 = Math.max(desk ? 166 : 215, (navBottom + 6 - oy) / u + fsM * 0.62);
@@ -422,7 +415,6 @@
         EL[id].style.transform = 'translate3d(' + X + 'px,' + Y + 'px,0) rotate(' + p.r + 'deg) scale(' + (s * (p.f || 1)) + ',' + s + ')';
         EL[id].style.opacity = p.o;
       } else {
-        // centred text: BLENDS, wordmark, labels
         EL[id].style.transform = 'translate3d(' + (ox + p.x * u) + 'px,' + (oy + p.y * u) + 'px,0) translate(-50%,-50%)';
         EL[id].style.opacity = p.o;
       }
@@ -453,7 +445,6 @@
     });
   }
 
-  // finish the step after release: >12 % into the step → next, otherwise back
   function settle() {
     const P = getP(), i = Math.floor(P), f = P - i;
     if (f < 1e-3 || f > 1 - 1e-3) return;
@@ -467,11 +458,13 @@
 
   addEventListener('touchstart', () => {
     pending = true; lastInput = 'touch'; fingerDown = true;
-    if (settling && lenis) { lenis.stop(); lenis.start(); } // interrupt the settle
+    if (settling && lenis) { lenis.stop(); lenis.start(); }
     settling = false;
   }, { passive: true });
+
   addEventListener('touchend', () => { fingerDown = false; lastMove = performance.now(); }, { passive: true });
   addEventListener('touchcancel', () => { fingerDown = false; }, { passive: true });
+
   addEventListener('pointerdown', (e) => {
     if (e.pointerType === 'mouse') { pending = true; lastInput = 'bar'; }
   }, { passive: true });
@@ -517,6 +510,7 @@
     }
     requestAnimationFrame(frame);
   }
+
   render(0);
   requestAnimationFrame(frame);
 
@@ -532,5 +526,5 @@
     document.body.classList.add('ready');
   }
   Promise.all([fontsReady, pDunes, pFlowers, pFunnel, pSheets]).then(show, show);
-  setTimeout(show, 2500); // failsafe
+  setTimeout(show, 2500);
 })();
